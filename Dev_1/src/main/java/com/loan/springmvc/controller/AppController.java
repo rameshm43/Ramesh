@@ -55,7 +55,7 @@ public class AppController {
 	/**
 	 * This method will list all existing users.
 	 */
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/user", "/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
 		List<User> users = userService.findAllUsers();
@@ -187,10 +187,41 @@ public class AppController {
 		if (isCurrentAuthenticationAnonymous()) {
 			return "login";
 	    } else {
-	    	return "redirect:/list";  
+	    	return "redirect:/index";  
 	    }
 	}
 
+	@RequestMapping(value = { "/","/index" }, method = RequestMethod.GET)
+	public String indexPage(ModelMap model) {
+			model.addAttribute("loggedinuser", getPrincipal());
+			return "index";
+	    
+	}
+	
+	@RequestMapping(value = { "/employee" }, method = RequestMethod.GET)
+	public String employeePage(ModelMap model) {
+			model.addAttribute("loggedinuser", getPrincipal());
+			model.addAttribute("tab", "admin");
+			model.addAttribute("menu", "employee");
+			return "employee";	    
+	}
+	
+	@RequestMapping(value = { "/branch" }, method = RequestMethod.GET)
+	public String branchPage(ModelMap model) {
+			model.addAttribute("loggedinuser", getPrincipal());
+			model.addAttribute("tab", "admin");
+			model.addAttribute("menu", "branch");
+			return "branch";	    
+	}
+	
+	@RequestMapping(value = { "/organizations" }, method = RequestMethod.GET)
+	public String organizationPage(ModelMap model) {
+			model.addAttribute("loggedinuser", getPrincipal());
+			model.addAttribute("tab", "admin");
+			model.addAttribute("menu", "organizations");
+			return "organizations";	    
+	}
+		
 	/**
 	 * This method handles logout requests.
 	 * Toggle the handlers if you are RememberMe functionality is useless in your app.

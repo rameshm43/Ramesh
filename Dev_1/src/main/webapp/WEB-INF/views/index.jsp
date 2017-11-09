@@ -59,15 +59,7 @@
     <div id="admin" class="tab-pane fade">        
             <jsp:include page="Include_Admin_Sidemenu.jsp" />  
            <div id="page-wrapper">
-            <div class="row">
-            <div id="branch" class="col-lg-12">
-                    <h1 class="page-header">Branch</h1>
-                </div>
-                <div id="employee" class="col-lg-12">
-                    <h1 class="page-header">Employee</h1>
-                </div>
-            </div>
-          
+                  
             </div>  </div>
     <div id="dashboard" class="tab-pane fade in active">
       <h3>Menu 1</h3>

@@ -1,15 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
     <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                        
-                        <li>
-                            <a href="#employee"><i class="fa fa-users"></i> Employee</a>
+                        <li class="active"><a href="<c:url value='/employee' />"><i class="fa fa-users"></i> Employee</a></li>
+                          <li>
+                            <a href="<c:url value='/branch' />"><i class="fa fa-dashboard fa-fw"></i> Branch</a>
                         </li>
                           <li>
-                            <a href="#branch"><i class="fa fa-dashboard fa-fw"></i> Branch</a>
+                            <a href="<c:url value='/organizations' />"><i class="fa fa-dashboard fa-fw"></i> Organizations</a>
                         </li>
                           <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Organizations</a>
+                            <a href="<c:url value='/newuser' />"><i class="fa fa-dashboard fa-fw"></i> REGISTRATION</a>
+                        </li>
+                         <li>
+                            <a href="<c:url value='/user/list' />"><i class="fa fa-dashboard fa-fw"></i> All Users</a>
                         </li>
                       <!--   
                         <li>
