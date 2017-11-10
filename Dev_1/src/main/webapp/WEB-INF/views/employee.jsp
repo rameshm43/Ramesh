@@ -49,6 +49,37 @@
     border: 1px solid #ddd;
     border-bottom-color: transparent;
 }
+.margin_add{
+         margin: 10px;
+         }
+         /* Fix alignment issue of label on extra small devices in Bootstrap 3.2, without this form group sticks together */
+         .form-horizontal .control-label{
+         padding-top: 7px;
+         }
+
+hr {
+    height: 1px; 
+    background-color:#555; 
+    margin-top: 0px;
+    margin-bottom: 1px;
+    width: 75%;
+}
+
+.about-border {
+   
+    width: 100%;
+    height: 0px;
+    background: #f1cd8f;
+    margin: 5px auto;
+	    margin-top: 0px;
+    margin-bottom: 1px;
+}
+
+.mypanel {
+   /* height: 100px; */
+    /*overflow-y: scroll; */
+	    overflow-x: scroll; 
+}
 
 
 </style>
@@ -65,12 +96,182 @@
            <div id="page-wrapper">
             <div class="row">
                 <div id="employee" class="col-lg-12">
-                    <h1 class="page-header">Employee</h1>
-                    <h2>Welcome</h2>
-                </div>
-            </div>
-          
-            </div>  </div>
+                    <h1 class="page-header">Employee</h1>                 
+                   
+                   
+<form role="form" class='form-horizontal'> <!--- Inline Form Layout --->
+ <div class="margin_add   .control-label">     
+  <div class="row">
+  
+    <!-- section 1 begins -->
+	<div class="col-xs-12 col-md-6">
+ <!-- left Column nested 2 rows -->
+            <div class="row">  <!--- patient column 1 row 1--->
+                <div class="col-xs-12">
+
+
+						<div class = "panel panel-primary mypanel">
+                        <div class = "panel-heading">
+                           <h3 class = "panel-title">Employee</h3>
+                        </div>
+                        <div class = "panel-body"> <!---This is a Basic panel--->                         
+					    <div class="form-group">
+							     <div class="text-muted small col-xs-12">Name<hr class="about-border"></div>								
+                                 <div class="col-xs-3">
+								 <div class="input-group">
+											<select class="form-control" id="sel1" title="please fill out this field">
+											<option value="" selected disabled class="text-hide">Title</option>
+											<option>Miss</option>
+											  <option>Mr</option>
+											  <option>Mrs</option>
+											  <option>Ms</option>											  
+											</select>
+											<span class="input-group-addon "  style="height: 18px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
+									 </div> 
+                                 </div> 
+                                 <div class="col-xs-5">
+									<div class="input-group">
+
+										<input type="text" class="form-control" id="lastname" placeholder="Last Name"  required>
+										<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;">*</span>
+									 </div> 
+                                 </div>    
+                                 <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="middlename" placeholder="Middle Name" required>
+                                 </div>  								 
+                              </div>
+
+                              <div class="form-group">
+                                
+                              	 <div class="col-xs-5">
+                                    <input type="text" class="form-control" id="firstname" placeholder="First Name" required>
+                                 </div>    
+                              </div>
+
+                             
+                              <div class="form-group">
+							 <!--- <div class="text-muted small col-xs-12"><p>Birth Details</p></div>--->
+							 <div class="text-muted small col-xs-12">Birth Details<hr class="about-border"></div>
+
+								<div class="col-xs-3">
+								<div class='input-group date ' id='datetimepicker1'>
+									<input type='text' class="form-control" />
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar">
+										</span>
+									</span>
+								</div>
+                                 </div>
+
+
+								<div class="col-xs-5"> 
+                                    <input type="text" class="form-control" id="ssn" placeholder="SSN" required>
+                                 </div>
+								
+								<div class="col-xs-4">
+									<input type="text" class="form-control" id="gender" placeholder="Gender" required>
+                                 </div>
+                              </div>
+                              
+                               <div class="form-group">                                 
+                                 <div class="col-xs-3">
+                                    <input type="text" class="form-control" id="maritalstatus" placeholder="Marital status" required>
+                                 </div>
+									</div>
+
+                              <div class="form-group">
+                              <div class="text-muted small col-xs-12">Language<hr class="about-border"></div>
+								<div class="col-xs-4">
+									<input type="text" class="form-control" id="language" placeholder="Language" required>
+                                 </div>
+                              </div>                  
+                        </div><!--- panel body end --->                        
+                     </div><!--- panel primary end  --->
+
+
+				</div>
+      
+                           
+    <!-- section 1 begins -->
+    <div class="col-xs-12">
+						<div class = "panel panel-primary mypanel">
+                           <div class = "panel-heading">
+                              <h3 class = "panel-title">Home Address</h3>
+                           </div>
+                           <div class = "panel-body">
+                              <!---This is a Basic panel--->
+                              
+                                 <div class="form-group">
+                           <div class="col-xs-4">
+                              <input type="text" class="form-control" id="street1" placeholder="Street 1" required>
+                           </div>
+                           <div class="col-xs-4">
+                              <input type="text" class="form-control" id="street2" placeholder="Street 2" required>
+                           </div>
+                           <div class="col-xs-4">
+                              <input type="text" class="form-control" id="city" placeholder="City" required>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-xs-4">
+                              <input type="text" class="form-control" id="state" placeholder="State" required>
+                           </div>
+                           <div class="col-xs-4">
+                              <input type="text" class="form-control" id="zip" placeholder="Zip" required>
+                           </div>
+                           <div class="col-xs-4">
+                              <input type="text" class="form-control" id="country" placeholder="Country" required>
+                           </div>
+                        </div>
+	</div>	</div>	</div>		
+                          
+    <!-- section 1 begins -->
+	 <div class="col-xs-12">
+
+					<div class = "panel panel-primary mypanel">
+                           <div class = "panel-heading">
+                              <h3 class = "panel-title">Contact Information</h3>
+                           </div>
+                           <div class = "panel-body">
+                              <!---This is a Basic panel--->
+							
+                           <div class="form-group">
+                              <div class="col-xs-4">
+                                 <input type="text" class="form-control" id="home" placeholder="Home" required>
+                              </div>
+                              <div class="col-xs-4">
+                                 <input type="text" class="form-control" id="mobile" placeholder="Mobile" required>
+                              </div>
+                             <div class="col-xs-4">
+                                 <input type="text" class="form-control" id="phone" placeholder="Phone" required>
+                              </div>
+                           </div>
+                              <div class="form-group">
+                              <div class="col-xs-4">
+                                 <input type="text" class="form-control" id="email" placeholder="Email" required>
+                              </div>
+                           </div>     
+                        </div> <!--- panel body end --->                        
+                     </div> <!--- panel primary end  --->
+
+	 </div></div>
+    <!-- section 1 ends -->
+
+    <!-- section 1 begins -->
+<!---    <div class="col-xs-12 col-md-6">					
+	</div> --->
+    <!-- section 1 ends -->
+  
+</div>
+    </div></div>
+	</form>                                  
+						   </div> <!--- panel body end --->                          
+                     </div> <!--- panel primary end  --->
+
+	</div>
+    <!-- section 1 ends -->
+                   
+                </div>         
     <div id="dashboard" class="tab-pane fade">
       <h3>Menu 1</h3>
       <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -80,8 +281,8 @@
       <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
     </div>
     <div id="report" class="tab-pane fade">
-       <jsp:include page="includeHeaders.jsp" />  
-    <jsp:include page="includeTabs.jsp" />   </div>
+    <h1>Welcome to report page</h1>
+       </div>
 
         </div>   
 </div>
