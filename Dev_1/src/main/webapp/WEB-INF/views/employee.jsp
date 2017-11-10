@@ -92,7 +92,8 @@ hr {
     <jsp:include page="includeTabs.jsp" />  
   <div class="tab-content">
     <div id="admin" class="tab-pane fade in active">        
-            <jsp:include page="Include_Admin_Sidemenu.jsp" />  
+            <jsp:include page="Include_Admin_Sidemenu.jsp" />                    
+            <jsp:include page="Include_Admin_Sidemenu.jsp" /> 
            <div id="page-wrapper">
             <div class="row">
                 <div id="employee" class="col-lg-12">
