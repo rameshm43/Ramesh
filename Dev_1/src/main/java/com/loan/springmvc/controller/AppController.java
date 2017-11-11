@@ -34,7 +34,7 @@ import com.loan.springmvc.service.EmployeeService;
 @Controller
 @RequestMapping("/")
 @SessionAttributes("roles")
-public class AppController {
+public class AppController extends PrincipalClass{
 
 	@Autowired
 	EmployeeService employeeService;
@@ -56,7 +56,7 @@ public class AppController {
 	/**
 	 * This method will list all existing users.
 	 */
-	@RequestMapping(value = { "/employee", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/emp", "/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
 		List<Employee> employees = employeeService.findAllUsers();
@@ -136,12 +136,12 @@ public class AppController {
 			return "registration";
 		}
 
-		/*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-		if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-			FieldError ssoError =new FieldError("user","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{user.getSsoId()}, Locale.getDefault()));
-		    result.addError(ssoError);
+		//Uncomment below 'if block' if you WANT TO ALLOW UPDATING EMPLOYEEID in UI which is a unique key to a User.
+		if(!employeeService.isUserEmployeeIdUnique(employee.getId(), employee.getEmployeeid())){
+			FieldError employeeError =new FieldError("employee","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{employee.getEmployeeid()}, Locale.getDefault()));
+		    result.addError(employeeError);
 			return "registration";
-		}*/
+		}
 
 
 		employeeService.updateEmployee(employee);
@@ -239,7 +239,7 @@ public class AppController {
 
 	/**
 	 * This method returns the principal[user-name] of logged-in user.
-	 */
+	 
 	private String getPrincipal(){
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -250,7 +250,7 @@ public class AppController {
 			userName = principal.toString();
 		}
 		return userName;
-	}
+	}*/
 	
 	/**
 	 * This method returns true if users is already authenticated [logged-in], else false.

@@ -5,19 +5,19 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                        
-                        <li class="active"><a href="<c:url value='/employee' />"><i class="fa fa-users"></i> Employee</a></li>
+                        <li><a href="<c:url value='/navication-admin-employee-employee' />"><i class="fa fa-users"></i> Employee</a></li>
                           <li>
-                            <a href="<c:url value='/branch' />"><i class="fa fa-dashboard fa-fw"></i> Branch</a>
+                            <a href="<c:url value='/navication-admin-branch-branch' />"><i class="fa fa-dashboard fa-fw"></i> Branch</a>
                         </li>
                           <li>
-                            <a href="<c:url value='/organizations' />"><i class="fa fa-dashboard fa-fw"></i> Organizations</a>
+                            <a href="<c:url value='/navication-admin-organizations-organizations' />"><i class="fa fa-dashboard fa-fw"></i> Organizations</a>
                         </li>
-                          <li>
+                         <%--  <li>
                             <a href="<c:url value='/newuser' />"><i class="fa fa-dashboard fa-fw"></i> REGISTRATION</a>
                         </li>
                          <li>
                             <a href="<c:url value='/user/list' />"><i class="fa fa-dashboard fa-fw"></i> All Users</a>
-                        </li>
+                        </li> --%>
                       <!--   
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
