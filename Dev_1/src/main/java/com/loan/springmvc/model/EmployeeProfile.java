@@ -8,17 +8,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+/**
+ * @author balaj_000
+ */
 
 @Entity
-@Table(name="USER_PROFILE")
-public class UserProfile implements Serializable{
-
+@Table(name="EMPLOYEE_PROFILE")
+public class EmployeeProfile implements Serializable{
+	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;	
 
 	@Column(name="TYPE", length=15, unique=true, nullable=false)
-	private String type = UserProfileType.USER.getUserProfileType();
-	
+	private String type = EmployeeProfileType.USER.getEmployeeProfileType();
+
 	public Integer getId() {
 		return id;
 	}
@@ -50,9 +53,9 @@ public class UserProfile implements Serializable{
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof UserProfile))
+		if (getClass() != obj.getClass())
 			return false;
-		UserProfile other = (UserProfile) obj;
+		EmployeeProfile other = (EmployeeProfile) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -68,10 +71,8 @@ public class UserProfile implements Serializable{
 
 	@Override
 	public String toString() {
-		return "UserProfile [id=" + id + ", type=" + type + "]";
+		return "EmployeeProfile [id=" + id + ", type=" + type + "]";
 	}
-
-
-
+	
 
 }

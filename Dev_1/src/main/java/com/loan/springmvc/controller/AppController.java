@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.loan.springmvc.model.User;
-import com.loan.springmvc.model.UserProfile;
-import com.loan.springmvc.service.UserProfileService;
-import com.loan.springmvc.service.UserService;
+import com.loan.springmvc.model.Employee;
+import com.loan.springmvc.model.EmployeeProfile;
+import com.loan.springmvc.service.EmployeeProfileService;
+import com.loan.springmvc.service.EmployeeService;
 
 
 
@@ -37,10 +37,11 @@ import com.loan.springmvc.service.UserService;
 public class AppController {
 
 	@Autowired
-	UserService userService;
+	EmployeeService employeeService;
 	
 	@Autowired
-	UserProfileService userProfileService;
+	EmployeeProfileService employeeProfileService;
+	
 	
 	@Autowired
 	MessageSource messageSource;
@@ -55,13 +56,13 @@ public class AppController {
 	/**
 	 * This method will list all existing users.
 	 */
-	@RequestMapping(value = { "/user", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/employee", "/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
-		List<User> users = userService.findAllUsers();
-		model.addAttribute("users", users);
+		List<Employee> employees = employeeService.findAllUsers();
+		model.addAttribute("employees", employees);
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "userslist";
+		return "employees";
 	}
 
 	/**
@@ -69,8 +70,8 @@ public class AppController {
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.GET)
 	public String newUser(ModelMap model) {
-		User user = new User();
-		model.addAttribute("user", user);
+		Employee employee = new Employee();
+		model.addAttribute("employee", employee);
 		model.addAttribute("edit", false);
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "registration";
@@ -81,7 +82,7 @@ public class AppController {
 	 * saving user in database. It also validates the user input
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
-	public String saveUser(@Valid User user, BindingResult result,
+	public String saveUser(@Valid Employee employee, BindingResult result,
 			ModelMap model) {
 
 		if (result.hasErrors()) {
@@ -96,15 +97,15 @@ public class AppController {
 		 * framework as well while still using internationalized messages.
 		 * 
 		 */
-		if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-			FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-		    result.addError(ssoError);
+		if(!employeeService.isUserEmployeeIdUnique(employee.getId(), employee.getEmployeeid())){
+			FieldError employeeError =new FieldError("employee","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{employee.getEmployeeid()}, Locale.getDefault()));
+		    result.addError(employeeError);
 			return "registration";
 		}
 		
-		userService.saveUser(user);
+		employeeService.saveEmployee(employee);
 
-		model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " registered successfully");
+		model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " registered successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
 		//return "success";
 		return "registrationsuccess";
@@ -114,10 +115,10 @@ public class AppController {
 	/**
 	 * This method will provide the medium to update an existing user.
 	 */
-	@RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.GET)
-	public String editUser(@PathVariable String ssoId, ModelMap model) {
-		User user = userService.findBySSO(ssoId);
-		model.addAttribute("user", user);
+	@RequestMapping(value = { "/edit-employee-{employeeid}" }, method = RequestMethod.GET)
+	public String editUser(@PathVariable String employeeid, ModelMap model) {
+		Employee employee = employeeService.findByEmployeeId(employeeid);
+		model.addAttribute("employee", employee);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "registration";
@@ -127,9 +128,9 @@ public class AppController {
 	 * This method will be called on form submission, handling POST request for
 	 * updating user in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.POST)
-	public String updateUser(@Valid User user, BindingResult result,
-			ModelMap model, @PathVariable String ssoId) {
+	@RequestMapping(value = { "/edit-employee-{employeeid}" }, method = RequestMethod.POST)
+	public String updateUser(@Valid Employee employee, BindingResult result,
+			ModelMap model, @PathVariable String employeeid) {
 
 		if (result.hasErrors()) {
 			return "registration";
@@ -137,15 +138,14 @@ public class AppController {
 
 		/*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
 		if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-			FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+			FieldError ssoError =new FieldError("user","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{user.getSsoId()}, Locale.getDefault()));
 		    result.addError(ssoError);
 			return "registration";
 		}*/
 
 
-		userService.updateUser(user);
-
-		model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " updated successfully");
+		employeeService.updateEmployee(employee);
+		model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " updated successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "registrationsuccess";
 	}
@@ -154,9 +154,9 @@ public class AppController {
 	/**
 	 * This method will delete an user by it's SSOID value.
 	 */
-	@RequestMapping(value = { "/delete-user-{ssoId}" }, method = RequestMethod.GET)
-	public String deleteUser(@PathVariable String ssoId) {
-		userService.deleteUserBySSO(ssoId);
+	@RequestMapping(value = { "/delete-employee-{employeeid}" }, method = RequestMethod.GET)
+	public String deleteUser(@PathVariable String employeeid) {
+		employeeService.deleteEmployeeByEmployeeId(employeeid);
 		return "redirect:/list";
 	}
 	
@@ -164,9 +164,9 @@ public class AppController {
 	/**
 	 * This method will provide UserProfile list to views
 	 */
-	@ModelAttribute("roles")
-	public List<UserProfile> initializeProfiles() {
-		return userProfileService.findAll();
+	@ModelAttribute("emp-roles")
+	public List<EmployeeProfile> initializeEmployeeProfiles() {
+		return employeeProfileService.findAll();
 	}
 	
 	/**
