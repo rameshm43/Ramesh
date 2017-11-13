@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,44 +11,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="balaji">
 
-    <title>Dash Board</title>
-     <!-- Bootstrap Core CSS -->
-	<link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
- 
-     <!-- MetisMenu CSS -->
-     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
-   
-    <!-- Custom CSS -->
-     <link href="static/dist/css/sb-admin-2.css" rel="stylesheet"></link>
-
-    <!-- Morris Charts CSS -->
-     <link href="static/vendor/morrisjs/morris.css" rel="stylesheet"></link>
-   
-    <!-- Custom Fonts -->
-     <link href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"></link>
-  
-     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <title>Employee</title>
 <style>
-/* tab color */
-.nav-tabs li a {
-  background-color: #337ab7; 
-  color:white;
-}
 
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
-    color: #555;
-    cursor: default;
-    background-color: #ccc;
-    border: 1px solid #ddd;
-    border-bottom-color: transparent;
-}
 .margin_add{
          margin: 10px;
          }
@@ -92,181 +59,267 @@ hr {
     <jsp:include page="includeTabs.jsp" />  
   <div class="tab-content">
     <div id="admin" class="tab-pane fade in active">        
-            <jsp:include page="Include_Admin_Sidemenu.jsp" />                    
-            <jsp:include page="Include_Admin_Sidemenu.jsp" /> 
+            <jsp:include page="Include_Admin_Sidemenu.jsp" />   
            <div id="page-wrapper">
-            <div class="row">
-                <div id="employee" class="col-lg-12">
-                    <h1 class="page-header">Employee</h1>                 
-                   
-                   
-<form role="form" class='form-horizontal'> <!--- Inline Form Layout --->
- <div class="margin_add   .control-label">     
-  <div class="row">
+           <div class="container">
+            <%--  <div id="searchpanel" style="" class="col-lg-1">
+             <ul>
+             <c:forEach items="${employees}" var="username" varStatus="counter">
   
-    <!-- section 1 begins -->
-	<div class="col-xs-12 col-md-6">
- <!-- left Column nested 2 rows -->
-            <div class="row">  <!--- patient column 1 row 1--->
-                <div class="col-xs-12">
-
-
-						<div class = "panel panel-primary mypanel">
+     <li>   <input type="button" name="employee[${counter.index}].employeeid" value="${username.employeeid}" /></li>
+    </c:forEach>
+ 
+             </ul>
+             </div> --%>
+             
+             <div class="col-lg-1">
+                        <ul class="list-group">
+   
+   <c:forEach items="${employees}" var="username" varStatus="counter">
+ <li> <a href="#" class="list-group-item">${username.employeeid}</a></li>
+   
+    </c:forEach>
+  </ul>
+</div>
+            
+            
+             
+             
+             
+                <div id="employeepanel" class="col-lg-11">
+                    <h3 class="page-header">Employee</h3>                 
+   <div class="generic-container">
+	 	<form:form method="POST" modelAttribute="employee" class="form-horizontal">
+			<form:input type="hidden" path="id" id="id"/>
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class = "panel panel-primary mypanel">
                         <div class = "panel-heading">
-                           <h3 class = "panel-title">Employee</h3>
+                           <h3 class = "panel-title">Personal Info</h3>
                         </div>
-                        <div class = "panel-body"> <!---This is a Basic panel--->                         
-					    <div class="form-group">
-							     <div class="text-muted small col-xs-12">Name<hr class="about-border"></div>								
-                                 <div class="col-xs-3">
-								 <div class="input-group">
-											<select class="form-control" id="sel1" title="please fill out this field">
+                        <div class = "panel-body"> <!---This is a Basic panel--->   
+                        <div class="form-group">                       
+                             <div class="col-xs-3">                             
+								<span>Title</span>
+								<div class="input-group">
+										<form:select path="title" class="form-control" id="title" title="please fill out this field">
 											<option value="" selected disabled class="text-hide">Title</option>
 											<option>Miss</option>
-											  <option>Mr</option>
-											  <option>Mrs</option>
-											  <option>Ms</option>											  
-											</select>
-											<span class="input-group-addon "  style="height: 18px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
-									 </div> 
-                                 </div> 
-                                 <div class="col-xs-5">
-									<div class="input-group">
-
-										<input type="text" class="form-control" id="lastname" placeholder="Last Name"  required>
-										<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;">*</span>
-									 </div> 
-                                 </div>    
-                                 <div class="col-xs-4">
-                                    <input type="text" class="form-control" id="middlename" placeholder="Middle Name" required>
-                                 </div>  								 
-                              </div>
-
-                              <div class="form-group">
-                                
-                              	 <div class="col-xs-5">
-                                    <input type="text" class="form-control" id="firstname" placeholder="First Name" required>
-                                 </div>    
-                              </div>
-
-                             
-                              <div class="form-group">
-							 <!--- <div class="text-muted small col-xs-12"><p>Birth Details</p></div>--->
-							 <div class="text-muted small col-xs-12">Birth Details<hr class="about-border"></div>
-
-								<div class="col-xs-3">
-								<div class='input-group date ' id='datetimepicker1'>
-									<input type='text' class="form-control" />
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar">
-										</span>
-									</span>
-								</div>
-                                 </div>
-
-
-								<div class="col-xs-5"> 
-                                    <input type="text" class="form-control" id="ssn" placeholder="SSN" required>
-                                 </div>
-								
-								<div class="col-xs-4">
-									<input type="text" class="form-control" id="gender" placeholder="Gender" required>
-                                 </div>
-                              </div>
-                              
-                               <div class="form-group">                                 
-                                 <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="maritalstatus" placeholder="Marital status" required>
-                                 </div>
-									</div>
-
-                              <div class="form-group">
-                              <div class="text-muted small col-xs-12">Language<hr class="about-border"></div>
-								<div class="col-xs-4">
-									<input type="text" class="form-control" id="language" placeholder="Language" required>
-                                 </div>
-                              </div>                  
-                        </div><!--- panel body end --->                        
-                     </div><!--- panel primary end  --->
-
-
+									        <option>Mr</option>
+											<option>Mrs</option>
+										    <option>Ms</option>		
+										</form:select>
+								 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
+								</div> 
+                           </div>  
+                                 
+                    <div class="col-xs-5">
+                        <span>Last Name</span>
+						<div class="input-group">
+							<form:input type="text" path="lastName" id="lastName" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="lastName" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+                     <div class="col-xs-4">
+                        <span>First Name</span>
+						<div class="input-group">
+							<form:input type="text" path="firstName" id="lastName" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="firstName" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div>              
+                   </div>            
+                  <div class="form-group">
+                     <div class="col-xs-3">                             
+						<span>Middle Name</span>
+						<div class="input-group">
+							<form:input type="text" path="middle_initial" id="middle_initial" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="middle_initial" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                 </div>  
+                  
+                  
+                  
+                  <div class="col-xs-5">                             
+						<span>Birth Date</span>
+						<div class='input-group date' id='datetimepicker1'>
+							<form:input type='text' path="birthdate" id="birthdate" class="form-control input-sm" />
+							<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar">
+							</span>
+							</span>
+						</div>
+				</div>				
+				
+				 <div class="col-xs-4">                             
+						<span>Hire Date</span>
+						<div class='input-group date' id='datetimepicker1'>
+							<form:input type='text' path="emphiredate" id="emphiredate" class="form-control input-sm" />
+							<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar">
+							</span>
+							</span>
+						</div>
 				</div>
-      
-                           
-    <!-- section 1 begins -->
-    <div class="col-xs-12">
-						<div class = "panel panel-primary mypanel">
-                           <div class = "panel-heading">
-                              <h3 class = "panel-title">Home Address</h3>
-                           </div>
-                           <div class = "panel-body">
-                              <!---This is a Basic panel--->
-                              
-                                 <div class="form-group">
-                           <div class="col-xs-4">
-                              <input type="text" class="form-control" id="street1" placeholder="Street 1" required>
-                           </div>
-                           <div class="col-xs-4">
-                              <input type="text" class="form-control" id="street2" placeholder="Street 2" required>
-                           </div>
-                           <div class="col-xs-4">
-                              <input type="text" class="form-control" id="city" placeholder="City" required>
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <div class="col-xs-4">
-                              <input type="text" class="form-control" id="state" placeholder="State" required>
-                           </div>
-                           <div class="col-xs-4">
-                              <input type="text" class="form-control" id="zip" placeholder="Zip" required>
-                           </div>
-                           <div class="col-xs-4">
-                              <input type="text" class="form-control" id="country" placeholder="Country" required>
-                           </div>
-                        </div>
-	</div>	</div>	</div>		
-                          
-    <!-- section 1 begins -->
-	 <div class="col-xs-12">
-
+				      
+                   </div>
+                   
+                    <div class="form-group">
+                    
+                  
+                     <div class="col-xs-3">
+                        <span>Gender</span>
+						<div class="input-group">
+							<form:input type="text" path="gender" id="gender" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="gender" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+                    
+                    <div class="col-xs-5">
+                        <span>SSN</span>
+						<div class="input-group">
+							<form:input type="text" path="ssn" id="ssn" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="ssn" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+                    
+                </div>
+                </div>
+                </div>           <!-- Personal Body Panel end -->         
+				</div>  <!-- Personal Info END -->
+			
+<%-- 			<!-- Address Info -->
+			<div class="col-md-12">
 					<div class = "panel panel-primary mypanel">
-                           <div class = "panel-heading">
-                              <h3 class = "panel-title">Contact Information</h3>
-                           </div>
-                           <div class = "panel-body">
-                              <!---This is a Basic panel--->
-							
-                           <div class="form-group">
-                              <div class="col-xs-4">
-                                 <input type="text" class="form-control" id="home" placeholder="Home" required>
-                              </div>
-                              <div class="col-xs-4">
-                                 <input type="text" class="form-control" id="mobile" placeholder="Mobile" required>
-                              </div>
-                             <div class="col-xs-4">
-                                 <input type="text" class="form-control" id="phone" placeholder="Phone" required>
-                              </div>
-                           </div>
-                              <div class="form-group">
-                              <div class="col-xs-4">
-                                 <input type="text" class="form-control" id="email" placeholder="Email" required>
-                              </div>
-                           </div>     
-                        </div> <!--- panel body end --->                        
-                     </div> <!--- panel primary end  --->
+                        <div class = "panel-heading">
+                           <h3 class = "panel-title">Address Info</h3>
+                        </div>
+                        <div class = "panel-body"> <!---This is a Basic panel--->   
+                 <div class="form-group"> 
+                    <div class="col-xs-3">
+                        <span>Street1</span>
+						<div class="input-group">
+							<form:input type="text" path="address[0].street1" id="street1" class="form-control input-sm" required />
+							<div class="has-error">
+								<form:errors path="address[0].street1" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div>   
+                    
+                     <div class="col-xs-5">
+                        <span>Street2</span>
+						<div class="input-group">
+							<form:input type="text" path="address[0].street2" id="street2" class="form-control input-sm"  />
+							<div class="has-error">
+								<form:errors path="address[0].street2" class="help-inline"/>
+							</div>
+						</div> 
+                    </div>                     
+                    
+                     <div class="col-xs-4">
+                        <span>Street2</span>
+						<div class="input-group">
+							<form:input type="text" path="address[0].city" id="city" class="form-control input-sm"  />
+							<div class="has-error">
+								<form:errors path="address[0].city" class="help-inline"/>
+							</div>
+						</div> 
+                    </div>
+                </div>
+                
+               <div class="form-group"> 
+               		<div class="col-xs-3">
+                        <span>State</span>
+						<div class="input-group">
+							<form:input type="text" path="address[0].state" id="state" class="form-control input-sm" required />
+							<div class="has-error">
+								<form:errors path="address[0].state" class="help-inline"/>
+							</div>	
+						</div> 
+                    </div>   
+                    
+                     <div class="col-xs-5">
+                        <span>Zip</span>
+						<div class="input-group">
+							<form:input type="text" path="address[0].zip" id="zip" class="form-control input-sm"  />
+							<div class="has-error">
+								<form:errors path="address[0].zip" class="help-inline"/>
+							</div>
+						</div> 
+                    </div>                     
+				</div>               
+                
+                </div> 
+              </div> <!-- Address Info End -->
+	</div> --%>
+	<div class="col-md-12">
+					<div class = "panel panel-primary mypanel">
+                        <div class = "panel-heading">
+                           <h3 class = "panel-title">Credential Info</h3>
+                        </div>
+                        <div class = "panel-body"> <!---This is a Basic panel--->   
+                 <div class="form-group"> 
+                   
+	   <div class="col-xs-3">
+                        <span>Primary Email</span>
+						<div class="input-group">
+							<form:input type="text" path="email" id="email" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="email" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+	
+	
+                     <div class="col-xs-5">
+                        <span>Password</span>
+						<div class="input-group">
+							<form:input type="password" path="password" id="password" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="password" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+                 
+ <div class="col-xs-4">
+ 
+ <span>Roles</span>
+						<div class="input-group">
+							<form:select path="employeeProfiles" items="${roles}" multiple="true" itemValue="id" itemLabel="type" class="form-control input-sm" />
+						<div class="has-error">
+							<form:errors path="employeeProfiles" class="help-inline"/>
+						</div>
+							</div> 
+			
+					
+				</div>
+                 
+                 </div></div></div></div>
 
-	 </div></div>
-    <!-- section 1 ends -->
-
-    <!-- section 1 begins -->
-<!---    <div class="col-xs-12 col-md-6">					
-	</div> --->
-    <!-- section 1 ends -->
-  
-</div>
-    </div></div>
-	</form>                                  
-						   </div> <!--- panel body end --->                          
+			</div>
+		</form:form>
+	</div>                
+                   
+                                 
+						   </div> <!--- panel body end --->                         
                      </div> <!--- panel primary end  --->
 
 	</div>

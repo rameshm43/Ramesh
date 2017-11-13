@@ -35,17 +35,17 @@
 					</tr>
 		    	</thead>
 	    		<tbody>
-				<c:forEach items="${users}" var="user">
+				<c:forEach items="${employees}" var="employees">
 					<tr>
-						<td>${user.firstName}</td>
-						<td>${user.lastName}</td>
-						<td>${user.email}</td>
-						<td>${user.ssoId}</td>
+						<td>${employees.firstName}</td>
+						<td>${employees.lastName}</td>
+						<td>${employees.email}</td>
+						<td>${employees.employeeid}</td>
 					    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-							<td><a href="<c:url value='/edit-user-${user.ssoId}' />" class="btn btn-success custom-width">edit</a></td>
+							<td><a href="<c:url value='/edit-employee-${employees.employeeid}' />" class="btn btn-success custom-width">edit</a></td>
 				        </sec:authorize>
 				        <sec:authorize access="hasRole('ADMIN')">
-							<td><a href="<c:url value='/delete-user-${user.ssoId}' />" class="btn btn-danger custom-width">delete</a></td>
+							<td><a href="<c:url value='/delete-employee-${employees.employeeid}' />" class="btn btn-danger custom-width">delete</a></td>
         				</sec:authorize>
 					</tr>
 				</c:forEach>

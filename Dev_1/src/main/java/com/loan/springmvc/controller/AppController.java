@@ -62,7 +62,7 @@ public class AppController extends PrincipalClass{
 		List<Employee> employees = employeeService.findAllUsers();
 		model.addAttribute("employees", employees);
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "employees";
+		return "userslist";
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class AppController extends PrincipalClass{
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", false);
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "registration";
+		return "employee";
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class AppController extends PrincipalClass{
 	/**
 	 * This method will provide UserProfile list to views
 	 */
-	@ModelAttribute("emp-roles")
+	@ModelAttribute("roles")
 	public List<EmployeeProfile> initializeEmployeeProfiles() {
 		return employeeProfileService.findAll();
 	}
@@ -198,30 +198,7 @@ public class AppController extends PrincipalClass{
 	    
 	}
 	
-	@RequestMapping(value = { "/employee" }, method = RequestMethod.GET)
-	public String employeePage(ModelMap model) {
-			model.addAttribute("loggedinuser", getPrincipal());
-			model.addAttribute("tab", "admin");
-			model.addAttribute("menu", "employee");
-			return "employee";	    
-	}
 	
-	@RequestMapping(value = { "/branch" }, method = RequestMethod.GET)
-	public String branchPage(ModelMap model) {
-			model.addAttribute("loggedinuser", getPrincipal());
-			model.addAttribute("tab", "admin");
-			model.addAttribute("menu", "branch");
-			return "branch";	    
-	}
-	
-	@RequestMapping(value = { "/organizations" }, method = RequestMethod.GET)
-	public String organizationPage(ModelMap model) {
-			model.addAttribute("loggedinuser", getPrincipal());
-			model.addAttribute("tab", "admin");
-			model.addAttribute("menu", "organizations");
-			return "organizations";	    
-	}
-		
 	/**
 	 * This method handles logout requests.
 	 * Toggle the handlers if you are RememberMe functionality is useless in your app.
