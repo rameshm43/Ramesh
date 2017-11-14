@@ -24,7 +24,7 @@
 				        <th>Firstname</th>
 				        <th>Lastname</th>
 				        <th>Email</th>
-				        <th>SSO ID</th>
+				        <th>Employee ID</th>
 				        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
 				        	<th width="100"></th>
 				        </sec:authorize>

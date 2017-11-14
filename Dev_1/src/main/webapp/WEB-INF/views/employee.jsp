@@ -2,6 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,7 +81,7 @@ hr {
                  <div class="col-xs-6 col-sm-1">
                    </div>
     				<div class="col-xs-6 col-sm-1" style="background-color:lavenderblush;">
-   					 <ul style="list-style-type: none;">    
+   					 <ul class="list-group" style="list-style-type: none;">    
       				 <c:forEach items="${employees}" var="username" varStatus="counter">
 					 <li> <a href="<c:url value='/browse-employee-${username.employeeid}' />" >${username.employeeid}</a></li>   
   					  </c:forEach>
@@ -88,13 +89,22 @@ hr {
     				</div>
             <div class="clearfix visible-xs"></div>
              <c:choose>
-						<c:when test="${create}">
+						<c:when test="${create||edit}">
     			<div class="col-xs-6 col-sm-10" style="background-color:lightgray;">
-                    <h3 class="page-header">Employee</h3>  
-	 				<form:form method="POST" action='/Dev_1/newuser' modelAttribute="employee" class="form-horizontal">
+                    <h3 class="page-header">Employee &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    <sec:authorize access="hasRole('ADMIN')">
+		 	<div class="well">
+		 		<a href="<c:url value='/newuser' />">Add New User</a>
+		 	</div>
+	 	</sec:authorize></h3>  
+	 				<form:form method="POST" modelAttribute="employee" class="form-horizontal">
 						<form:input type="hidden" path="id" id="id"/>
 			
 					<div class="row">
+					<c:if test="${success}">
+					<div class="alert alert-success lead">
+	    	${success}
+		</div></c:if>
 						<div class="col-md-12">
 							<div class = "panel panel-primary mypanel">
                         	<div class = "panel-heading">
@@ -203,7 +213,7 @@ hr {
                 </div>           <!-- Personal Body Panel end -->         
 				</div>  <!-- Personal Info END -->
 			
-<%-- 			<!-- Address Info -->
+			<!-- Address Info -->
 			<div class="col-md-12">
 					<div class = "panel panel-primary mypanel">
                         <div class = "panel-heading">
@@ -214,10 +224,10 @@ hr {
                     <div class="col-xs-3">
                         <span>Street1</span>
 						<div class="input-group">
-							<form:input type="text" path="address[0].street1" id="street1" class="form-control input-sm" required />
-							<div class="has-error">
-								<form:errors path="address[0].street1" class="help-inline"/>
-							</div>
+							<input type="text" name="street1" value="${street1}" id="street1" class="form-control input-sm" required />
+							<%-- <div class="has-error">
+								<form:errors path="address.street1" class="help-inline"/>
+							</div> --%>
 							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
 						</div> 
                     </div>   
@@ -225,20 +235,20 @@ hr {
                      <div class="col-xs-5">
                         <span>Street2</span>
 						<div class="input-group">
-							<form:input type="text" path="address[0].street2" id="street2" class="form-control input-sm"  />
-							<div class="has-error">
-								<form:errors path="address[0].street2" class="help-inline"/>
-							</div>
+							<input type="text" name="street2" value="${street2}" id="street2" class="form-control input-sm"  />
+							<%-- <div class="has-error">
+								<form:errors path="address.street2" class="help-inline"/>
+							</div> --%>
 						</div> 
                     </div>                     
                     
                      <div class="col-xs-4">
-                        <span>Street2</span>
+                        <span>City</span>
 						<div class="input-group">
-							<form:input type="text" path="address[0].city" id="city" class="form-control input-sm"  />
-							<div class="has-error">
-								<form:errors path="address[0].city" class="help-inline"/>
-							</div>
+							<input type="text" name="city" value="${city}" id="city" class="form-control input-sm"  />
+							<%-- <div class="has-error">
+								<form:errors path="address.city" class="help-inline"/>
+							</div> --%>
 						</div> 
                     </div>
                 </div>
@@ -247,27 +257,27 @@ hr {
                		<div class="col-xs-3">
                         <span>State</span>
 						<div class="input-group">
-							<form:input type="text" path="address[0].state" id="state" class="form-control input-sm" required />
-							<div class="has-error">
-								<form:errors path="address[0].state" class="help-inline"/>
-							</div>	
+							<input type="text" name="state" value="${state}" id="state" class="form-control input-sm" required />
+							<%-- <div class="has-error">
+								<form:errors path="address.state" class="help-inline"/>
+							</div>	 --%>
 						</div> 
                     </div>   
                     
                      <div class="col-xs-5">
                         <span>Zip</span>
 						<div class="input-group">
-							<form:input type="text" path="address[0].zip" id="zip" class="form-control input-sm"  />
-							<div class="has-error">
-								<form:errors path="address[0].zip" class="help-inline"/>
-							</div>
+							<input type="text" name="zip" value="${zip}" id="zip" class="form-control input-sm"  />
+							<%-- <div class="has-error">
+								<form:errors path="address.zip" class="help-inline"/>
+							</div> --%>
 						</div> 
                     </div>                     
 				</div>               
                 
                 </div> 
               </div> <!-- Address Info End -->
-	</div> --%>
+	</div> 
 	<div class="col-md-12">
 					<div class = "panel panel-primary mypanel">
                         <div class = "panel-heading">
@@ -342,7 +352,7 @@ hr {
                     <div class="col-xs-5">
                         <span>User Status</span>
 						<div class="input-group">
-										<form:select path="userstatus" class="form-control" id="userstatus" title="please fill out this field">
+										<form:select path="userstatus" value="${userstatus}" class="form-control" id="userstatus" title="please fill out this field">
 											<option value="" selected disabled class="text-hide">User Status</option>
 											<option value="ACTIVE">Active</option>
 									        <option value="INACTIVE">InActive</option>
@@ -381,7 +391,12 @@ hr {
           	<c:choose>
 		<c:when test="${browse}">
 			<div class="col-xs-6 col-sm-10" style="background-color:lightgray;">
-                    <h3 class="page-header">Employee</h3> 
+                    <h3 class="page-header">Employee&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    <sec:authorize access="hasRole('ADMIN')">
+		 	<div class="well">
+		 		<a href="<c:url value='/newuser' />">Add New User</a>
+		 	</div>
+	 	</sec:authorize></h3> 
 		<div class="row">
 						<div class="col-md-12">
 							<div class = "panel panel-primary mypanel">
@@ -390,23 +405,31 @@ hr {
                         	</div>
                         	<div class = "panel-body"> <!---This is a Basic panel--->   
                         	
-                        		<dl>
+                        		<dl>                        		
+								<dt>Employee ID</dt><dd>${employee.employeeid}</dd>
+								<dt>Title</dt><dd>${employee.title}</dd>
 								<dt>First Name</dt><dd>${employee.firstName}</dd>
 								<dt>Last Name</dt><dd>${employee.lastName}</dd>
 								<dt>Gender</dt><dd>${employee.gender}</dd>
-								<dt>Employee ID</dt><dd>${employee.employeeid}</dd>
 								<dt>BirthDate</dt><dd>${employee.birthdate}</dd>
-								<dt>Name</dt><dd>${firstName}</dd>
-								<dt>Name</dt><dd>${firstName}</dd>
-								<dt>Name</dt><dd>${firstName}</dd>
+								<dt>Hire Date</dt><dd>${employee.emphiredate}</dd>
+								<dt>SSN</dt><dd>${employee.ssn}</dd>
+								<dt>User Status</dt><dd>${employee.userstatus}</dd>
 								</dl>
                         	
-                        	</div></div></div></div></div>
+                        	</div></div></div>
+                        	
+                        	 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+							<a href="<c:url value='/edit-employee-${employee.employeeid}' />" class="btn btn-success custom-width">edit</a>
+				        </sec:authorize>
+                        	
+                        	
+                        	</div></div>
 		</c:when></c:choose>				
    	</div> <!--- panel body end --->      
    	 </div>    
 
-	
+	<div id="loadEmployeeid"></div>
 						
 						
 						
@@ -419,11 +442,11 @@ hr {
                 </div>         
     <div id="dashboard" class="tab-pane fade">
       <h3>Menu 1</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      
     </div>
     <div id="customer" class="tab-pane fade">
       <h3>Menu 2</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+   
     </div>
     <div id="report" class="tab-pane fade">
     <h1>Welcome to report page</h1>
@@ -453,5 +476,43 @@ hr {
     <script src="static/dist/js/sb-admin-2.js"></script>
 
 </body>
+<script>
+jQuery(document).ready(function($) {
+	$("#loadEmployeeid").submit(function(event) {
 
+		// Prevent the form from submitting via the browser.
+		event.preventDefault();
+		searchViaAjax();
+
+	});
+});
+
+function searchAjax() {
+	var data = {}
+	data["query"] = $("#query").val();
+
+	$.ajax({
+		type : "POST",
+		contentType : "application/json",
+		url : "http://localhost:8083/Dev_1/showallemployee",
+		data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 100000,
+		success : function(data) {
+			console.log("SUCCESS: ", data);
+			display(data);
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
+
+</script>
 </html>
+
+

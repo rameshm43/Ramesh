@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.loan.springmvc.model.Address;
 import com.loan.springmvc.model.Employee;
 import com.loan.springmvc.model.EmployeeProfile;
 import com.loan.springmvc.service.EmployeeProfileService;
@@ -85,7 +86,7 @@ public class AppController extends PrincipalClass{
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
 	public String saveUser(@Valid Employee employee, BindingResult result,
-			ModelMap model) {
+			ModelMap model, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
 			List<Employee> employees = employeeService.findAllUsers();
@@ -109,12 +110,26 @@ public class AppController extends PrincipalClass{
 			return "employee";
 		}
 		
+		
+		String street1 = request.getParameter("street1")!=null?request.getParameter("street1"):"";
+		String street2 = request.getParameter("street2")!=null?request.getParameter("street2"):"";
+		String city = request.getParameter("city")!=null?request.getParameter("city"):"";
+		String state = request.getParameter("state")!=null?request.getParameter("state"):"";
+		String country = request.getParameter("country")!=null?request.getParameter("country"):"";
+		String zip = request.getParameter("zip")!=null?request.getParameter("zip"):"";
+		Address address = new Address();
+		address.setCity(city);
+		address.setState(state);
+		address.setStreet2(street2);
+		address.setStreet1(street1);
+		address.setZip(zip);
+		employee.setAddress(address);
 		employeeService.saveEmployee(employee);
 
 		model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " registered successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
 		//return "success";
-		return "registrationsuccess";
+		return "employee";
 	}
 
 	@RequestMapping(value = { "/browse-employee-{employeeid}" }, method = RequestMethod.GET)
@@ -149,6 +164,15 @@ public class AppController extends PrincipalClass{
 	public String editUser(@PathVariable String employeeid, ModelMap model) {
 		Employee employee = employeeService.findByEmployeeId(employeeid);
 		model.addAttribute("employee", employee);
+		if(employee.getAddress() != null) {
+		model.addAttribute("street1", employee.getAddress().getStreet1()!=null?employee.getAddress().getStreet1():"");
+		model.addAttribute("street2", employee.getAddress().getStreet2()!=null?employee.getAddress().getStreet2():"");
+		model.addAttribute("state", employee.getAddress().getState()!=null?employee.getAddress().getState():"");
+		model.addAttribute("city", employee.getAddress().getCity()!=null?employee.getAddress().getCity():"");
+		model.addAttribute("zip", employee.getAddress().getZip()!=null? employee.getAddress().getZip():"");
+		}
+		List<Employee> employees = employeeService.findAllUsers();
+		model.addAttribute("employees", employees);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "employee";
@@ -160,10 +184,21 @@ public class AppController extends PrincipalClass{
 	 */
 	@RequestMapping(value = { "/edit-employee-{employeeid}" }, method = RequestMethod.POST)
 	public String updateUser(@Valid Employee employee, BindingResult result,
-			ModelMap model, @PathVariable String employeeid) {
+			ModelMap model, @PathVariable String employeeid,HttpServletRequest request) {
 
 		if (result.hasErrors()) {
-			return "employee";
+			if(employee.getAddress() != null) {
+				model.addAttribute("street1", employee.getAddress().getStreet1()!=null?employee.getAddress().getStreet1():"");
+				model.addAttribute("street2", employee.getAddress().getStreet2()!=null?employee.getAddress().getStreet2():"");
+				model.addAttribute("state", employee.getAddress().getState()!=null?employee.getAddress().getState():"");
+				model.addAttribute("city", employee.getAddress().getCity()!=null?employee.getAddress().getCity():"");
+				model.addAttribute("zip", employee.getAddress().getZip()!=null? employee.getAddress().getZip():"");
+				}
+		List<Employee> employees = employeeService.findAllUsers();
+		model.addAttribute("employees", employees);
+		model.addAttribute("edit", true);
+		model.addAttribute("loggedinuser", getPrincipal());
+		return "employee";
 		}
 
 		//Uncomment below 'if block' if you WANT TO ALLOW UPDATING EMPLOYEEID in UI which is a unique key to a User.
@@ -172,12 +207,25 @@ public class AppController extends PrincipalClass{
 		    result.addError(employeeError);
 			return "employee";
 		}
-
+		String street1 = request.getParameter("street1")!=null?request.getParameter("street1"):"";
+		String street2 = request.getParameter("street2")!=null?request.getParameter("street2"):"";
+		String city = request.getParameter("city")!=null?request.getParameter("city"):"";
+		String state = request.getParameter("state")!=null?request.getParameter("state"):"";
+		String country = request.getParameter("country")!=null?request.getParameter("country"):"";
+		String zip = request.getParameter("zip")!=null?request.getParameter("zip"):"";
+		Address address = new Address();
+		address.setCity(city);
+		address.setState(state);
+		address.setStreet2(street2);
+		address.setStreet1(street1);
+		address.setZip(zip);
+		employee.setAddress(address);
 
 		employeeService.updateEmployee(employee);
 		model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " updated successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "registrationsuccess";
+		model.addAttribute("browse", true);
+		return "employee";
 	}
 
 	
@@ -190,6 +238,11 @@ public class AppController extends PrincipalClass{
 		return "redirect:/list";
 	}
 	
+	@RequestMapping(value = { "/showallemployee" }, method = RequestMethod.POST)
+	public List<Employee> showAllEmployee(ModelMap model) {
+		List<Employee> employees = employeeService.findAllUsers();
+		return employees;
+	}
 
 	/**
 	 * This method will provide UserProfile list to views
