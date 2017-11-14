@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/","/index","/navication/***")
 				.access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
-				.antMatchers("/newuser/**", "/delete-user-*").access("hasRole('ADMIN')").antMatchers("/edit-user-*")
+				.antMatchers("/newuser/**", "/delete-user-*").access("hasRole('ADMIN')").antMatchers("/edit-user-*","/browse-employee-*")
 				.access("hasRole('ADMIN') or hasRole('DBA')").and().formLogin().loginPage("/login")
 				.loginProcessingUrl("/login").usernameParameter("employeeid").passwordParameter("password").and()
 				.rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)

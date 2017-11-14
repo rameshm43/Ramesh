@@ -72,7 +72,9 @@ public class AppController extends PrincipalClass{
 	public String newUser(ModelMap model) {
 		Employee employee = new Employee();
 		model.addAttribute("employee", employee);
-		model.addAttribute("edit", false);
+		List<Employee> employees = employeeService.findAllUsers();
+		model.addAttribute("employees", employees);
+		model.addAttribute("create", true);
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "employee";
 	}
@@ -86,7 +88,11 @@ public class AppController extends PrincipalClass{
 			ModelMap model) {
 
 		if (result.hasErrors()) {
-			return "registration";
+			List<Employee> employees = employeeService.findAllUsers();
+			model.addAttribute("employees", employees);
+			model.addAttribute("create", true);
+			model.addAttribute("loggedinuser", getPrincipal());
+			return "employee";
 		}
 
 		/*
@@ -100,7 +106,7 @@ public class AppController extends PrincipalClass{
 		if(!employeeService.isUserEmployeeIdUnique(employee.getId(), employee.getEmployeeid())){
 			FieldError employeeError =new FieldError("employee","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{employee.getEmployeeid()}, Locale.getDefault()));
 		    result.addError(employeeError);
-			return "registration";
+			return "employee";
 		}
 		
 		employeeService.saveEmployee(employee);
@@ -111,6 +117,30 @@ public class AppController extends PrincipalClass{
 		return "registrationsuccess";
 	}
 
+	@RequestMapping(value = { "/browse-employee-{employeeid}" }, method = RequestMethod.GET)
+	public String browseUser(@PathVariable String employeeid, ModelMap model) {
+		Employee employee = employeeService.findByEmployeeId(employeeid);
+		model.addAttribute("employee", employee);
+		List<Employee> employees = employeeService.findAllUsers();
+		model.addAttribute("employees", employees);
+		model.addAttribute("edit", false);
+		model.addAttribute("browse", true);
+		model.addAttribute("loggedinuser", getPrincipal());
+		return "employee";
+	}
+	
+	@RequestMapping(value = { "/browse-employee-{employeeid}" }, method = RequestMethod.POST)
+	public String browseUser1(@PathVariable String employeeid, ModelMap model) {
+		Employee employee = employeeService.findByEmployeeId(employeeid);
+		model.addAttribute("employee", employee);
+		List<Employee> employees = employeeService.findAllUsers();
+		model.addAttribute("employees", employees);
+		model.addAttribute("edit", false);
+		model.addAttribute("browse", true);
+		model.addAttribute("loggedinuser", getPrincipal());
+		return "employee";
+	}
+	
 
 	/**
 	 * This method will provide the medium to update an existing user.
@@ -121,7 +151,7 @@ public class AppController extends PrincipalClass{
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinuser", getPrincipal());
-		return "registration";
+		return "employee";
 	}
 	
 	/**
@@ -133,14 +163,14 @@ public class AppController extends PrincipalClass{
 			ModelMap model, @PathVariable String employeeid) {
 
 		if (result.hasErrors()) {
-			return "registration";
+			return "employee";
 		}
 
 		//Uncomment below 'if block' if you WANT TO ALLOW UPDATING EMPLOYEEID in UI which is a unique key to a User.
 		if(!employeeService.isUserEmployeeIdUnique(employee.getId(), employee.getEmployeeid())){
 			FieldError employeeError =new FieldError("employee","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{employee.getEmployeeid()}, Locale.getDefault()));
 		    result.addError(employeeError);
-			return "registration";
+			return "employee";
 		}
 
 

@@ -48,6 +48,19 @@ hr {
 	    overflow-x: scroll; 
 }
 
+@media (min-width: 1200px){
+.col-lg-1 {
+    width: 10%;
+}
+
+.col-lg-2 {
+    width: 10%;
+}
+
+.col-lg-10 {
+    width: 80%;
+}
+}
 
 </style>
 </head>
@@ -58,61 +71,50 @@ hr {
   <jsp:include page="includeHeaders.jsp" />  
     <jsp:include page="includeTabs.jsp" />  
   <div class="tab-content">
-    <div id="admin" class="tab-pane fade in active">        
-            <jsp:include page="Include_Admin_Sidemenu.jsp" />   
-           <div id="page-wrapper">
-           <div class="container">
-            <%--  <div id="searchpanel" style="" class="col-lg-1">
-             <ul>
-             <c:forEach items="${employees}" var="username" varStatus="counter">
-  
-     <li>   <input type="button" name="employee[${counter.index}].employeeid" value="${username.employeeid}" /></li>
-    </c:forEach>
- 
-             </ul>
-             </div> --%>
-             
-             <div class="col-lg-1">
-                        <ul class="list-group">
-   
-   <c:forEach items="${employees}" var="username" varStatus="counter">
- <li> <a href="#" class="list-group-item">${username.employeeid}</a></li>
-   
-    </c:forEach>
-  </ul>
-</div>
-            
-            
-             
-             
-             
-                <div id="employeepanel" class="col-lg-11">
-                    <h3 class="page-header">Employee</h3>                 
-   <div class="generic-container">
-	 	<form:form method="POST" modelAttribute="employee" class="form-horizontal">
-			<form:input type="hidden" path="id" id="id"/>
+    <div id="admin" class="tab-pane fade in active">  
+      <jsp:include page="Include_Admin_Sidemenu.jsp" />  
+        
+       
+        <div class="container-fluid">  
+             <div class="row">             
+                 <div class="col-xs-6 col-sm-1">
+                   </div>
+    				<div class="col-xs-6 col-sm-1" style="background-color:lavenderblush;">
+   					 <ul style="list-style-type: none;">    
+      				 <c:forEach items="${employees}" var="username" varStatus="counter">
+					 <li> <a href="<c:url value='/browse-employee-${username.employeeid}' />" >${username.employeeid}</a></li>   
+  					  </c:forEach>
+    				</ul>
+    				</div>
+            <div class="clearfix visible-xs"></div>
+             <c:choose>
+						<c:when test="${create}">
+    			<div class="col-xs-6 col-sm-10" style="background-color:lightgray;">
+                    <h3 class="page-header">Employee</h3>  
+	 				<form:form method="POST" action='/Dev_1/newuser' modelAttribute="employee" class="form-horizontal">
+						<form:input type="hidden" path="id" id="id"/>
 			
-			<div class="row">
-				<div class="col-md-12">
-					<div class = "panel panel-primary mypanel">
-                        <div class = "panel-heading">
-                           <h3 class = "panel-title">Personal Info</h3>
-                        </div>
-                        <div class = "panel-body"> <!---This is a Basic panel--->   
-                        <div class="form-group">                       
-                             <div class="col-xs-3">                             
+					<div class="row">
+						<div class="col-md-12">
+							<div class = "panel panel-primary mypanel">
+                        	<div class = "panel-heading">
+                           	<h3 class = "panel-title">Personal Info</h3>
+                        	</div>
+                        	<div class = "panel-body"> <!---This is a Basic panel--->   
+                       			 <div class="form-group">                       
+                            	 <div class="col-xs-3">                             
 								<span>Title</span>
 								<div class="input-group">
 										<form:select path="title" class="form-control" id="title" title="please fill out this field">
 											<option value="" selected disabled class="text-hide">Title</option>
-											<option>Miss</option>
-									        <option>Mr</option>
-											<option>Mrs</option>
-										    <option>Ms</option>		
+											<option value="MISS">Miss</option>
+									        <option value="MR">Mr</option>
+											<option value="MRS">Mrs</option>
+										    <option value="MS">Ms</option>		
 										</form:select>
-								 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
-								</div> 
-                           </div>  
+									 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
+									</div> 
+                          		 </div>  
                                  
                     <div class="col-xs-5">
                         <span>Last Name</span>
@@ -145,10 +147,7 @@ hr {
 							</div>
 							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
 						</div> 
-                 </div>  
-                  
-                  
-                  
+                 </div>
                   <div class="col-xs-5">                             
 						<span>Birth Date</span>
 						<div class='input-group date' id='datetimepicker1'>
@@ -174,17 +173,18 @@ hr {
                    </div>
                    
                     <div class="form-group">
-                    
-                  
                      <div class="col-xs-3">
                         <span>Gender</span>
 						<div class="input-group">
-							<form:input type="text" path="gender" id="gender" class="form-control input-sm" />
-							<div class="has-error">
-								<form:errors path="gender" class="help-inline"/>
-							</div>
-							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
-						</div> 
+										<form:select path="gender" class="form-control" id="gender" title="please fill out this field">
+											<option value="" selected disabled class="text-hide">Gender</option>
+											<option value="MALE">Male</option>
+									        <option value="FEMALE">Female</option>
+											<option value="UNKNOWN">Unknown</option>
+										</form:select>
+									 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
+							</div> 
+						
                     </div> 
                     
                     <div class="col-xs-5">
@@ -299,9 +299,8 @@ hr {
 						</div> 
                     </div> 
                  
- <div class="col-xs-4">
- 
- <span>Roles</span>
+ 						<div class="col-xs-4">
+ 						<span>Roles</span>
 						<div class="input-group">
 							<form:select path="employeeProfiles" items="${roles}" multiple="true" itemValue="id" itemLabel="type" class="form-control input-sm" />
 						<div class="has-error">
@@ -312,17 +311,109 @@ hr {
 					
 				</div>
                  
-                 </div></div></div></div>
+                 </div>
+                 
+                 <div class="form-group"> 
+                   
+	   				<div class="col-xs-3">
+                        <span>EMP ID</span>
+						<div class="input-group">
+							<form:input type="text" path="employeeid" id="employeeid" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="employeeid" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+	
+	
+                     <div class="col-xs-5">
+                        <span>User Name</span>
+						<div class="input-group">
+							<form:input type="text" path="username" id="username" class="form-control input-sm" />
+							<div class="has-error">
+								<form:errors path="username" class="help-inline"/>
+							</div>
+							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
+						</div> 
+                    </div> 
+                    
+                    
+                    <div class="col-xs-5">
+                        <span>User Status</span>
+						<div class="input-group">
+										<form:select path="userstatus" class="form-control" id="userstatus" title="please fill out this field">
+											<option value="" selected disabled class="text-hide">User Status</option>
+											<option value="ACTIVE">Active</option>
+									        <option value="INACTIVE">InActive</option>
+											<option value="INPROCESS">InProcess</option>
+										</form:select>
+									 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
+					</div> 
+                    </div> 
+
+                 
+                 </div>
+                 
+                 
+                 
+                 
+                 </div></div></div>
 
 			</div>
-		</form:form>
-	</div>                
-                   
-                                 
-						   </div> <!--- panel body end --->                         
+			
+			
+			 <div class="row">
+				<div class="form-actions floatRight">
+					<c:choose>
+						<c:when test="${edit}">
+							<input type="submit" value="Update" class="btn btn-primary btn-sm"/> 
+						</c:when>
+						<c:otherwise>
+							<input type="submit" value="Register" class="btn btn-primary btn-sm"/>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+		</form:form> 
+          </div> </c:when></c:choose>     
+          
+          	<c:choose>
+		<c:when test="${browse}">
+			<div class="col-xs-6 col-sm-10" style="background-color:lightgray;">
+                    <h3 class="page-header">Employee</h3> 
+		<div class="row">
+						<div class="col-md-12">
+							<div class = "panel panel-primary mypanel">
+                        	<div class = "panel-heading">
+                           	<h3 class = "panel-title">Personal Info</h3>
+                        	</div>
+                        	<div class = "panel-body"> <!---This is a Basic panel--->   
+                        	
+                        		<dl>
+								<dt>First Name</dt><dd>${employee.firstName}</dd>
+								<dt>Last Name</dt><dd>${employee.lastName}</dd>
+								<dt>Gender</dt><dd>${employee.gender}</dd>
+								<dt>Employee ID</dt><dd>${employee.employeeid}</dd>
+								<dt>BirthDate</dt><dd>${employee.birthdate}</dd>
+								<dt>Name</dt><dd>${firstName}</dd>
+								<dt>Name</dt><dd>${firstName}</dd>
+								<dt>Name</dt><dd>${firstName}</dd>
+								</dl>
+                        	
+                        	</div></div></div></div></div>
+		</c:when></c:choose>				
+   	</div> <!--- panel body end --->      
+   	 </div>    
+
+	
+						
+						
+						
+						
+						              
                      </div> <!--- panel primary end  --->
 
-	</div>
     <!-- section 1 ends -->
                    
                 </div>         
@@ -339,7 +430,6 @@ hr {
        </div>
 
         </div>   
-</div>
 
         <!-- /#page-wrapper -->
 

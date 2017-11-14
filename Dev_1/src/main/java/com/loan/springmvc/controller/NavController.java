@@ -41,6 +41,7 @@ public class NavController extends PrincipalClass{
 				List<Employee> employees = employeeService.findAllUsers();
 				model.addAttribute("employees", employees);
 				model.addAttribute("employee", new Employee());
+				model.addAttribute("create", true);
 			}
 			
 			return page;	    
