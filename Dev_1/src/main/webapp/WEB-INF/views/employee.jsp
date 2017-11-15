@@ -405,7 +405,7 @@ hr {
                         	</div>
                         	<div class = "panel-body"> <!---This is a Basic panel--->   
                         	
-                        		<dl>                        		
+                        		<dl  class="dl-horizontal">                        		
 								<dt>Employee ID</dt><dd>${employee.employeeid}</dd>
 								<dt>Title</dt><dd>${employee.title}</dd>
 								<dt>First Name</dt><dd>${employee.firstName}</dd>
@@ -417,11 +417,43 @@ hr {
 								<dt>User Status</dt><dd>${employee.userstatus}</dd>
 								</dl>
                         	
+                        	</div></div>
+                        	</div>
+                        	<div class="col-md-12">
+							<div class = "panel panel-primary mypanel">
+                        	<div class = "panel-heading">
+                           	<h3 class = "panel-title">Address Info</h3>
+                        	</div>
+                        	<div class = "panel-body"> <!---This is a Basic panel--->   
+                        	
+                        		<dl  class="dl-horizontal">                               		
+								<dt>Street 1</dt><dd>${employee.address.street1}</dd>
+								<dt>Street 2</dt><dd>${employee.address.street1}</dd>
+								<dt>City</dt><dd>${employee.address.city}</dd>
+								<dt>State</dt><dd>${employee.address.state}</dd>
+								<dt>Zip</dt><dd>${employee.address.zip}</dd>
+								</dl>
+                        	
                         	</div></div></div>
                         	
-                        	 <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                        	<div class="col-md-12">
+							<div class = "panel panel-primary mypanel">
+                        	<div class = "panel-heading">
+                           	<h3 class = "panel-title">Credential Info</h3>
+                        	</div>
+                        	<div class = "panel-body"> <!---This is a Basic panel--->   
+                        	
+                        		<dl  class="dl-horizontal">                             		
+								<dt>Primary Mail</dt><dd>${employee.email}</dd>
+								<dt>User Name</dt><dd>${employee.username}</dd>
+								<dt>User Status</dt><dd>${employee.userstatus}</dd>
+								</dl>
+                        	
+                        	</div></div></div>
+                        	
+                        	<div align="center"> <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
 							<a href="<c:url value='/edit-employee-${employee.employeeid}' />" class="btn btn-success custom-width">edit</a>
-				        </sec:authorize>
+				        </sec:authorize></div>
                         	
                         	
                         	</div></div>
