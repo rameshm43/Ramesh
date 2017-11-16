@@ -118,4 +118,18 @@ CREATE TABLE MODELTRANSACTION(
 drop table MODELTRANSACTION;
 
 
+/* ORGANIZATIONS */
+CREATE TABLE ORGANIZATIONS(
+OrganizationId BIGINT NOT NULL,
+OrganizationName  VARCHAR(64),
+OrganizationNumber  VARCHAR(64),
+ParentOrganizationId  VARCHAR(64),
+PRIMARY KEY (OrganizationId)
+);
+
+
+
+
+
+
 
