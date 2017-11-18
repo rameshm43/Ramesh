@@ -117,10 +117,24 @@ hr {
 								<div class="input-group">
 										<form:select path="title" class="form-control" id="title" title="please fill out this field">
 											<option value="" selected disabled class="text-hide">Title</option>
-											<option value="MISS">Miss</option>
-									        <option value="MR">Mr</option>
-											<option value="MRS">Mrs</option>
-										    <option value="MS">Ms</option>		
+										    <c:choose>
+    										<c:when test="${employee.title.equals('MISS')}">
+    										<option value="MISS" Selected>Miss</option>
+       										</c:when>
+       										<c:otherwise><option value="MISS">Miss</option></c:otherwise></c:choose>
+       										<c:choose>
+    										<c:when test="${employee.title.equals('MR')}">
+    										 <option value="MR" Selected>Mr</option>
+      									    </c:when><c:otherwise> <option value="MR">Mr</option></c:otherwise></c:choose>
+      									    <c:choose>
+      									    <c:when test="${employee.title.equals('MRS')}">
+      									    <option value="MRS" Selected>Mrs</option>
+      									    </c:when><c:otherwise><option value="MRS">Mrs</option></c:otherwise></c:choose>
+      									    <c:choose>
+      									    <c:when test="${employee.title.equals('MS')}">
+      									     <option value="MS" Selected>Ms</option>	
+      									    </c:when><c:otherwise> <option value="MS">Ms</option></c:otherwise></c:choose>										
+
 										</form:select>
 									 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
 									</div> 
@@ -161,22 +175,16 @@ hr {
                   <div class="col-xs-5">                             
 						<span>Birth Date</span>
 						<div class='input-group date' id='datetimepicker1'>
-							<form:input type='text' path="birthdate" id="birthdate" class="form-control input-sm" />
-							<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar">
-							</span>
-							</span>
+							<form:input type='date' data-date-format="YYYY-MM-DD" path="birthdate" id="birthdate" class="form-control input-sm" />
+					
 						</div>
 				</div>				
 				
 				 <div class="col-xs-4">                             
 						<span>Hire Date</span>
 						<div class='input-group date' id='datetimepicker1'>
-							<form:input type='text' path="emphiredate" id="emphiredate" class="form-control input-sm" />
-							<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar">
-							</span>
-							</span>
+							<form:input type='date' data-date-format="YYYY-MM-DD" path="emphiredate" id="emphiredate" class="form-control input-sm" />
+							
 						</div>
 				</div>
 				      
@@ -188,9 +196,21 @@ hr {
 						<div class="input-group">
 										<form:select path="gender" class="form-control" id="gender" title="please fill out this field">
 											<option value="" selected disabled class="text-hide">Gender</option>
-											<option value="MALE">Male</option>
-									        <option value="FEMALE">Female</option>
-											<option value="UNKNOWN">Unknown</option>
+											<c:choose>
+    										<c:when test="${employee.gender.equals('MALE')}">
+    										<option value="MALE" Selected>Male</option>
+       										</c:when>
+       										<c:otherwise><option value="MALE">Male</option></c:otherwise></c:choose>
+       										<c:choose>
+    										<c:when test="${employee.gender.equals('FEMALE')}">
+    										 <option value="FEMALE" Selected>Female</option>
+      									    </c:when><c:otherwise> <option value="FEMALE">Female</option></c:otherwise></c:choose>
+      									    <c:choose>
+      									    <c:when test="${employee.gender.equals('UNKNOWN')}">
+      									    <option value="UNKNOWN" Selected>Unknown</option>
+      									    </c:when><c:otherwise><option value="UNKNOWN">Unknown</option></c:otherwise></c:choose>
+      																	
+											
 										</form:select>
 									 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
 							</div> 
@@ -328,8 +348,15 @@ hr {
 	   				<div class="col-xs-3">
                         <span>EMP ID</span>
 						<div class="input-group">
+						<c:choose>
+						<c:when test="${edit}">
+							<input type="text" value="${employee.employeeid}" id="employeeid" class="form-control input-sm" disabled></input>
+						</c:when>
+						<c:otherwise>
 							<form:input type="text" path="employeeid" id="employeeid" class="form-control input-sm" />
-							<div class="has-error">
+						</c:otherwise>
+					</c:choose>
+					<div class="has-error">
 								<form:errors path="employeeid" class="help-inline"/>
 							</div>
 							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
@@ -352,11 +379,20 @@ hr {
                     <div class="col-xs-5">
                         <span>User Status</span>
 						<div class="input-group">
-										<form:select path="userstatus" value="${userstatus}" class="form-control" id="userstatus" title="please fill out this field">
-											<option value="" selected disabled class="text-hide">User Status</option>
-											<option value="ACTIVE">Active</option>
-									        <option value="INACTIVE">InActive</option>
-											<option value="INPROCESS">InProcess</option>
+										<form:select path="userstatus" value="${userstatus}" class="form-control" id="userstatus" title="please fill out this field">															
+											<c:choose>
+    										<c:when test="${employee.userstatus.equals('ACTIVE')}">
+    										<option value="ACTIVE" Selected>Active</option>
+       										</c:when>
+       										<c:otherwise><option value="ACTIVE">Active</option></c:otherwise></c:choose>
+       										<c:choose>
+    										<c:when test="${employee.userstatus.equals('INACTIVE')}">
+    										 <option value="INACTIVE" Selected>InActive</option>
+      									    </c:when><c:otherwise> <option value="INACTIVE">InActive</option></c:otherwise></c:choose>
+      									    <c:choose>
+      									    <c:when test="${employee.userstatus.equals('INPROCESS')}">
+      									    <option value="INPROCESS" Selected>InProcess</option>
+      									    </c:when><c:otherwise><option value="INPROCESS">InProcess</option></c:otherwise></c:choose>
 										</form:select>
 									 <span class="input-group-addon "  style="height: 10px; padding: 0 4px; margin: 0; background-color: white; color:red;">*</span>
 					</div> 
@@ -395,9 +431,14 @@ hr {
                     <sec:authorize access="hasRole('ADMIN')">
 		 	<div class="well">
 		 		<a href="<c:url value='/newuser' />">Add New User</a>
+		 			<c:if test="${success}">
+					<div class="alert alert-success lead">
+	    	${success}
+		</div></c:if>
 		 	</div>
 	 	</sec:authorize></h3> 
 		<div class="row">
+				
 						<div class="col-md-12">
 							<div class = "panel panel-primary mypanel">
                         	<div class = "panel-heading">
@@ -461,17 +502,12 @@ hr {
    	</div> <!--- panel body end --->      
    	 </div>    
 
-	<div id="loadEmployeeid"></div>
-						
-						
-						
-						
+			
 						              
                      </div> <!--- panel primary end  --->
 
     <!-- section 1 ends -->
                    
-                </div>         
     <div id="dashboard" class="tab-pane fade">
       <h3>Menu 1</h3>
       
@@ -483,7 +519,7 @@ hr {
     <div id="report" class="tab-pane fade">
     <h1>Welcome to report page</h1>
        </div>
-
+</div>
         </div>   
 
         <!-- /#page-wrapper -->

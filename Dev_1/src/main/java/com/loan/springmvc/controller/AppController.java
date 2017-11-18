@@ -1,5 +1,7 @@
 package com.loan.springmvc.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -7,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
@@ -18,17 +23,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.loan.springmvc.dao.ModelTransactionDaoImpl;
 import com.loan.springmvc.model.Address;
 import com.loan.springmvc.model.Employee;
 import com.loan.springmvc.model.EmployeeProfile;
+import com.loan.springmvc.model.ModelTransaction;
 import com.loan.springmvc.service.EmployeeProfileService;
 import com.loan.springmvc.service.EmployeeService;
+import com.loan.springmvc.service.ModelTransactionService;
 
 
 
@@ -37,8 +47,13 @@ import com.loan.springmvc.service.EmployeeService;
 @SessionAttributes("roles")
 public class AppController extends PrincipalClass{
 
+	static final Logger logger = LoggerFactory.getLogger(AppController.class);
+	
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	ModelTransactionService modelTransactionService;
 	
 	@Autowired
 	EmployeeProfileService employeeProfileService;
@@ -52,6 +67,13 @@ public class AppController extends PrincipalClass{
 	
 	@Autowired
 	AuthenticationTrustResolver authenticationTrustResolver;
+	
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	}
 	
 	
 	/**
@@ -107,6 +129,10 @@ public class AppController extends PrincipalClass{
 		if(!employeeService.isUserEmployeeIdUnique(employee.getId(), employee.getEmployeeid())){
 			FieldError employeeError =new FieldError("employee","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{employee.getEmployeeid()}, Locale.getDefault()));
 		    result.addError(employeeError);
+			List<Employee> employees = employeeService.findAllUsers();
+			model.addAttribute("employees", employees);
+			model.addAttribute("create", true);
+			model.addAttribute("loggedinuser", getPrincipal());
 			return "employee";
 		}
 		
@@ -125,7 +151,20 @@ public class AppController extends PrincipalClass{
 		address.setZip(zip);
 		employee.setAddress(address);
 		employeeService.saveEmployee(employee);
-
+		
+		ModelTransaction modeltransaction = new ModelTransaction();
+		modeltransaction.setTransactionname("Employee");
+		modeltransaction.setChangedby(employee.getUsername());
+		modeltransaction.setChangedescription("");
+		modeltransaction.setEntitykey(employee.getEmployeeid());
+		modeltransaction.setEntityname("Employee");
+		modeltransaction.setMethodname("POST");
+		modeltransaction.setStatus("ACTIVE");
+		modeltransaction.setInputparameters(employee.toString());
+		logger.debug("Model Transaction Input Parameters ::"+modeltransaction.toString());		
+		modelTransactionService.saveModelTransaction(modeltransaction);
+		
+		
 		model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " registered successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
 		//return "success";
@@ -171,6 +210,8 @@ public class AppController extends PrincipalClass{
 		model.addAttribute("city", employee.getAddress().getCity()!=null?employee.getAddress().getCity():"");
 		model.addAttribute("zip", employee.getAddress().getZip()!=null? employee.getAddress().getZip():"");
 		}
+		
+		
 		List<Employee> employees = employeeService.findAllUsers();
 		model.addAttribute("employees", employees);
 		model.addAttribute("edit", true);
@@ -183,20 +224,25 @@ public class AppController extends PrincipalClass{
 	 * updating user in database. It also validates the user input
 	 */
 	@RequestMapping(value = { "/edit-employee-{employeeid}" }, method = RequestMethod.POST)
-	public String updateUser(@Valid Employee employee, BindingResult result,
-			ModelMap model, @PathVariable String employeeid,HttpServletRequest request) {
-
-		if (result.hasErrors()) {
-			if(employee.getAddress() != null) {
-				model.addAttribute("street1", employee.getAddress().getStreet1()!=null?employee.getAddress().getStreet1():"");
-				model.addAttribute("street2", employee.getAddress().getStreet2()!=null?employee.getAddress().getStreet2():"");
-				model.addAttribute("state", employee.getAddress().getState()!=null?employee.getAddress().getState():"");
-				model.addAttribute("city", employee.getAddress().getCity()!=null?employee.getAddress().getCity():"");
-				model.addAttribute("zip", employee.getAddress().getZip()!=null? employee.getAddress().getZip():"");
-				}
+	public String updateUser(HttpServletRequest request, ModelMap model, @Valid Employee employee, BindingResult result,
+			 @PathVariable String employeeid) {
 		List<Employee> employees = employeeService.findAllUsers();
 		model.addAttribute("employees", employees);
+		if (result.hasErrors()) {
+				String street1 = request.getParameter("street1")!=null?request.getParameter("street1"):"";
+				String street2 = request.getParameter("street2")!=null?request.getParameter("street2"):"";
+				String city = request.getParameter("city")!=null?request.getParameter("city"):"";
+				String state = request.getParameter("state")!=null?request.getParameter("state"):"";
+				String country = request.getParameter("country")!=null?request.getParameter("country"):"";
+				String zip = request.getParameter("zip")!=null?request.getParameter("zip"):"";
+				model.addAttribute("street1", street1);
+				model.addAttribute("street2", street2);
+				model.addAttribute("state", state);
+				model.addAttribute("city", city);
+				model.addAttribute("zip", zip);
+		
 		model.addAttribute("edit", true);
+		model.addAttribute("employee", employee);
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "employee";
 		}
@@ -205,6 +251,15 @@ public class AppController extends PrincipalClass{
 		if(!employeeService.isUserEmployeeIdUnique(employee.getId(), employee.getEmployeeid())){
 			FieldError employeeError =new FieldError("employee","employeeid",messageSource.getMessage("non.unique.employeeid", new String[]{employee.getEmployeeid()}, Locale.getDefault()));
 		    result.addError(employeeError);
+		    model.addAttribute("employee", employee);
+			if(employee.getAddress() != null) {
+				model.addAttribute("street1", employee.getAddress().getStreet1()!=null?employee.getAddress().getStreet1():"");
+				model.addAttribute("street2", employee.getAddress().getStreet2()!=null?employee.getAddress().getStreet2():"");
+				model.addAttribute("state", employee.getAddress().getState()!=null?employee.getAddress().getState():"");
+				model.addAttribute("city", employee.getAddress().getCity()!=null?employee.getAddress().getCity():"");
+				model.addAttribute("zip", employee.getAddress().getZip()!=null? employee.getAddress().getZip():"");
+				}
+			model.addAttribute("edit", true);
 			return "employee";
 		}
 		String street1 = request.getParameter("street1")!=null?request.getParameter("street1"):"";
@@ -221,8 +276,35 @@ public class AppController extends PrincipalClass{
 		address.setZip(zip);
 		employee.setAddress(address);
 
-		employeeService.updateEmployee(employee);
+		
+		Employee oldObj = employeeService.findByEmployeeId(employeeid);
+		boolean empNew = oldObj.equals(employee);
+		
+		if(!empNew) {
+		employeeService.updateEmployee(employee);		
+		ModelTransaction modeltransaction = new ModelTransaction();
+		modeltransaction.setTransactionname("Employee");
+		modeltransaction.setChangedby(employee.getUsername());
+		modeltransaction.setChangedescription("");
+		modeltransaction.setEntitykey(employee.getEmployeeid());
+		modeltransaction.setEntityname("Employee");
+		modeltransaction.setMethodname("POST");
+		modeltransaction.setStatus("ACTIVE");
+		modeltransaction.setInputparameters(employee.toString());
+		logger.debug("Model Transaction Input Parameters ::"+modeltransaction.toString());		
+		modelTransactionService.saveModelTransaction(modeltransaction);
 		model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " updated successfully");
+		}else {
+			model.addAttribute("success", "employee " + employee.getFirstName() + " "+ employee.getLastName() + " not updated successfully");
+		}
+		model.addAttribute("employee", employee);
+		if(employee.getAddress() != null) {
+			model.addAttribute("street1", employee.getAddress().getStreet1()!=null?employee.getAddress().getStreet1():"");
+			model.addAttribute("street2", employee.getAddress().getStreet2()!=null?employee.getAddress().getStreet2():"");
+			model.addAttribute("state", employee.getAddress().getState()!=null?employee.getAddress().getState():"");
+			model.addAttribute("city", employee.getAddress().getCity()!=null?employee.getAddress().getCity():"");
+			model.addAttribute("zip", employee.getAddress().getZip()!=null? employee.getAddress().getZip():"");
+			}
 		model.addAttribute("loggedinuser", getPrincipal());
 		model.addAttribute("browse", true);
 		return "employee";

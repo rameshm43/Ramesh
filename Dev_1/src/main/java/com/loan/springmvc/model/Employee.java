@@ -24,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * 
  * @author balaj_000
@@ -110,6 +112,7 @@ public class Employee implements Serializable{
 	@JoinTable(name = "EMPLOYEE_USER_PROFILE", 
              joinColumns = { @JoinColumn(name = "EMPLOYEE_ID") }, 
              inverseJoinColumns = { @JoinColumn(name = "EMPLOYEE_PROFILE_ID") })
+	@JsonIgnore
 	private Set<EmployeeProfile> employeeProfiles = new HashSet<EmployeeProfile>();
 
 	

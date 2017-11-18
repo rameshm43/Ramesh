@@ -44,6 +44,10 @@ public class EmployeeImpl extends AbstractDao<Integer, Employee> implements Empl
 	public void save(Employee employee) {
 		persist(employee);
 	}
+	
+	public void update(Employee employee) {
+		persist(employee);
+	}
 
 	public void deleteByEmployeeId(String employeeid) {
 		Criteria crit = createEntityCriteria();

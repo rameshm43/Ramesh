@@ -40,14 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public void updateEmployee(Employee employee) {
 		Employee entity = dao.findById(employee.getId());
 		if(entity!=null){
-			entity.setEmployeeid(employee.getEmployeeid());
-			if(!employee.getPassword().equals(entity.getPassword())){
-				entity.setPassword(passwordEncoder.encode(employee.getPassword()));
-			}
-			entity.setFirstName(employee.getFirstName());
-			entity.setLastName(employee.getLastName());
-			entity.setEmail(employee.getEmail());
-			entity.setEmployeeProfiles(employee.getEmployeeProfiles());
+			dao.update(employee);
 		}
 	}
 
