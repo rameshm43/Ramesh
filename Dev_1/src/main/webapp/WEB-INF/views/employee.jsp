@@ -15,6 +15,7 @@
     <meta name="author" content="balaji">
 
     <title>Employee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
 .margin_add{
@@ -62,6 +63,29 @@ hr {
     width: 80%;
 }
 }
+.outerbox_heading {
+	border:0px solid #626363;
+	padding:5px 2px 10px 2px;
+	overflow:hidden;
+	margin-top:0px;
+	text-align:center;
+	font-family:Verdana;
+	font-size:21px;
+	color:#626363;
+	font-weight:bold;
+	letter-spacing:1px;
+	padding-left:0%;
+}
+.outerbox_heading_font {
+	font-family:Verdana;
+	font-size:16px;
+	color:#626363;
+	font-weight:bold;
+	letter-spacing:1px;
+	text-align:center;
+	line-height:0px;
+	padding-left:0%;
+}
 
 </style>
 </head>
@@ -77,26 +101,30 @@ hr {
         
        
         <div class="container-fluid">  
-             <div class="row">             
-                 <div class="col-xs-6 col-sm-1">
-                   </div>
-    				<div class="col-xs-6 col-sm-1" style="background-color:lavenderblush;">
-   					 <ul class="list-group" style="list-style-type: none;">    
+             <div class="row"> 
+             <div class="col-xs-6 col-sm-2"></div>            
+                <div class="col-xs-6 col-sm-2">
+    				<br><div class="form-group has-feedback">
+    				<input class="form-control" id="myInput" type="text"  class="glyphicon glyphicon-search" placeholder="Search.."> 
+    				<i class="glyphicon glyphicon-search form-control-feedback"></i></div>
+    				
+   					 <ul class="list-group" id="myList" style="list-style-type: none;">    
       				 <c:forEach items="${employees}" var="username" varStatus="counter">
-					 <li> <a href="<c:url value='/browse-employee-${username.employeeid}' />" >${username.employeeid}</a></li>   
+					 <li class="list-group-item"> <a href="<c:url value='/browse-employee-${username.employeeid}' />" >${username.employeeid}</a></li>   
   					  </c:forEach>
     				</ul>
     				</div>
             <div class="clearfix visible-xs"></div>
+            <div class="col-xs-6 col-sm-8">
+    			<div align="right"><a class="btn btn-default" href="<c:url value='/newuser' />"><i class="fa fa-user-plus"></i>&nbsp;Add Employee</a>
+		 	</div></div>
              <c:choose>
 						<c:when test="${create||edit}">
-    			<div class="col-xs-6 col-sm-10" style="background-color:lightgray;">
-                    <h3 class="page-header">Employee &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                    <sec:authorize access="hasRole('ADMIN')">
-		 	<div class="well">
-		 		<a href="<c:url value='/newuser' />">Add New User</a>
-		 	</div>
-	 	</sec:authorize></h3>  
+    			<div class="col-xs-6 col-sm-8">
+    			
+		 	<div class="outerbox_heading"><span class="outerbox_heading_font"><sec:authorize access="hasRole('ADMIN')"></sec:authorize>Employee</span></div>
+                   
+                     
 	 				<form:form method="POST" modelAttribute="employee" class="form-horizontal">
 						<form:input type="hidden" path="id" id="id"/>
 			
@@ -410,33 +438,29 @@ hr {
 			
 			
 			 <div class="row">
-				<div class="form-actions floatRight">
+				<div align="center"> 
 					<c:choose>
 						<c:when test="${edit}">
 							<input type="submit" value="Update" class="btn btn-primary btn-sm"/> 
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Register" class="btn btn-primary btn-sm"/>
+							<input type="submit" value="Save" class="btn btn-primary btn-sm"/>
 						</c:otherwise>
 					</c:choose>
 				</div>
+				<br>
 			</div>
 		</form:form> 
           </div> </c:when></c:choose>     
           
           	<c:choose>
 		<c:when test="${browse}">
-			<div class="col-xs-6 col-sm-10" style="background-color:lightgray;">
-                    <h3 class="page-header">Employee&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                    <sec:authorize access="hasRole('ADMIN')">
-		 	<div class="well">
-		 		<a href="<c:url value='/newuser' />">Add New User</a>
-		 			<c:if test="${success}">
+			<div class="col-xs-6 col-sm-8">
+			<div class="outerbox_heading"><span class="outerbox_heading_font"><sec:authorize access="hasRole('ADMIN')"></sec:authorize>Employee</span><c:if test="${success}">
 					<div class="alert alert-success lead">
 	    	${success}
-		</div></c:if>
-		 	</div>
-	 	</sec:authorize></h3> 
+		</div></c:if></div>
+                  
 		<div class="row">
 				
 						<div class="col-md-12">
@@ -490,13 +514,13 @@ hr {
 								<dt>User Status</dt><dd>${employee.userstatus}</dd>
 								</dl>
                         	
-                        	</div></div></div>
+                        	</div></div><br></div>
                         	
                         	<div align="center"> <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
 							<a href="<c:url value='/edit-employee-${employee.employeeid}' />" class="btn btn-success custom-width">edit</a>
 				        </sec:authorize></div>
                         	
-                        	
+                        	<br>
                         	</div></div>
 		</c:when></c:choose>				
    	</div> <!--- panel body end --->      
@@ -579,6 +603,16 @@ function searchAjax() {
 		}
 	});
 }
+
+
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myList li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
 
 </script>
 </html>
