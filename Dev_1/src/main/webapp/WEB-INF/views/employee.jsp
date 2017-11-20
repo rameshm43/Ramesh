@@ -172,20 +172,34 @@ hr {
 							<span class="input-group-addon"  style="height: 18px; padding: 0 4px; margin: 0;color:red;">*</span>
 						</div> 
                  </div>
-                  <div class="col-xs-5">                             
+            <%--       <div class="col-xs-5">                             
 						<span>Birth Date</span>
 						<div class='input-group date' id='datetimepicker1'>
-							<form:input type='date' data-date-format="YYYY-MM-DD" path="birthdate" id="birthdate" class="form-control input-sm" />
+							<form:input type='date' data-date-format="MM/DD/YYYY" path="birthdate" id="birthdate" class="form-control input-sm" />
 					
 						</div>
-				</div>				
+				</div>	 --%>			
+				
+				<div class="col-xs-5"> 
+				
+				 <span>Birth Date</span>
+                <div class="input-group date datetimepicker1 col-md-5" data-date="" data-date-format="mm/dd/yyyy" data-link-field="dtp_birthdate" data-link-format="mm/dd/yyyy">
+                    <form:input class="form-control" path="birthdate" type="text" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+				<input type="hidden" id="dtp_birthdate" value="" /><br/>
+								</div>
 				
 				 <div class="col-xs-4">                             
 						<span>Hire Date</span>
-						<div class='input-group date' id='datetimepicker1'>
-							<form:input type='date' data-date-format="YYYY-MM-DD" path="emphiredate" id="emphiredate" class="form-control input-sm" />
-							
-						</div>
+						     <div class="input-group date datetimepicker1 col-md-5" data-date="" data-date-format="mm/dd/yyyy" data-link-field="dtp_emphiredate" data-link-format="mm/dd/yyyy">
+                    <form:input class="form-control" path="emphiredate" type="text" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+				<input type="hidden" id="dtp_emphiredate" value="" /><br/>
+
 				</div>
 				      
                    </div>
@@ -531,20 +545,33 @@ hr {
 
     <!-- Bootstrap Core JavaScript -->
     <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    
+    
+<script type="text/javascript" src="static/vendor/CustomDateTimePicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="static/vendor/metisMenu/metisMenu.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <script src="static/vendor/raphael/raphael.min.js"></script>
-    <script src="static/vendor/morrisjs/morris.min.js"></script>
-    <script src="static/data/morris-data.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="static/dist/js/sb-admin-2.js"></script>
 
 </body>
 <script>
+
+$('.datetimepicker1').datetimepicker({
+    language:  'en',
+    weekStart: 1,
+    todayBtn:  1,
+	autoclose: 1,
+	todayHighlight: 1,
+	startView: 2,
+	minView: 2,
+	forceParse: 0
+});
+
 jQuery(document).ready(function($) {
 	$("#loadEmployeeid").submit(function(event) {
 

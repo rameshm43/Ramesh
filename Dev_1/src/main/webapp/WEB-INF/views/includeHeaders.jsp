@@ -8,6 +8,8 @@
      <!-- MetisMenu CSS -->
      <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
    
+   <link href="static/vendor/CustomDateTimePicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+   
     <!-- Custom CSS -->
      <link href="static/dist/css/sb-admin-2.css" rel="stylesheet"></link>
 

@@ -21,9 +21,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
@@ -59,7 +62,7 @@ public class Employee implements Serializable{
 	@Column(name="LAST_NAME", nullable=false)
 	private String lastName;
 
-	@NotEmpty
+	@NotEmpty @Email
 	@Column(name="EMAIL", nullable=false)
 	private String email;
 	
@@ -69,10 +72,13 @@ public class Employee implements Serializable{
 	@Column(name="TITLE", nullable=true)
 	private String title;
 	
+	@DateTimeFormat(pattern="MM/dd/yyyy")
+	@Past
 	@Column(name="BIRTHDATE", nullable=true)
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 
+	@DateTimeFormat(pattern="MM/dd/yyyy")
 	@Column(name="EMP_HIRE_DATE", nullable=true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date emphiredate;
